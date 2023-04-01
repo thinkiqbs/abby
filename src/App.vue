@@ -1,26 +1,51 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <layout>
+    <template #header>
+      <Navbar v-if="!showNavbar" class="navbar-fixed-top"></Navbar>
+      <!-- <a href="#" @click="toggleSidenav" class="btn btn-success" type="link">Toggle Sidenav</a> -->
+    </template>
+
+
+
+    <router-view></router-view>
+
+    <template #footer>
+      <footerComponent></footerComponent>
+    </template>
+  </layout>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Layout from "@/components/Layout.vue";
+import Navbar from "@/components/Navbar";
+import footerComponent from "@/components/footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Layout,
+    Navbar,
+    footerComponent,
+  },
+  data() {
+    return {
+      showSidenav: true,
+    };
+  },
+  computed: {
+    showNavbar() {
+      return this.$route.meta.hideNavbar;
+    },
+  },
+  watch: {
+    $route(to) {
+      this.showSidenav = !to.meta.hideSideBar;
+    },
+  },
+  methods: {
+    toggleSidenav() {
+      this.showSidenav = !this.showSidenav;
+    },
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

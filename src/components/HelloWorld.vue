@@ -1,58 +1,202 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="mt-3 mb-3" style="float: right">
+          <button>Today</button>
+          <button>This Week</button>
+          <button>This Month</button>
+          <button>This Year</button>
+          <button>Top Questions</button>
+        </p>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="new-question">Ask a Maths question:</label>
+          <textarea
+            type="text"
+            class="form-control"
+            id="new-question"
+            v-model="newQuestion"
+            placeholder="Enter your question"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="addQuestion"
+          style="float: right"
+        >
+          Ask
+        </button>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <ul class="list-unstyled">
+          <li
+            v-for="(question, index) in questions"
+            :key="index"
+            class="card my-4"
+          >
+            <h4>{{ question.title }}</h4>
+            <p>{{ question.description }}</p>
+            <p>
+              <button
+              type="button"
+              class="btn btn-primary"
+              @click="toggleAnswer(index)"
+            >
+              {{ question.showAnswer ? "Hide Answer" : "Show Answer" }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="toggleAnswer(index)"
+            >
+              Answer
+            </button>
+
+            </p>
+            <div class="form-group mt-4">
+              <label for="new-answer-{{ index }}">Your Answer:</label>
+              <input
+                type="text"
+                class="form-control"
+                :id="'new-answer-' + index"
+                v-model="newAnswer[index]"
+                placeholder="Enter your answer"
+              />
+            </div>
+            
+            <div v-if="question.showAnswer" class="my-4">
+              <h4>Other Answers:</h4>
+              <p>{{ question.answer }}</p>
+            </div>
+            
+            <button
+              type="button"
+              class="btn btn-primary btn-md-block mt-4"
+              @click="addAnswer(index)"
+            >
+              Answer
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  name: "ForumPage",
+  data() {
+    return {
+      newQuestion: "",
+      newAnswer: [],
+      questions: [
+        {
+          title: "What is Vue3?",
+          description:
+            "I heard about Vue3, but I am not sure what it is. Can someone explain?",
+          answer:
+            "Vue3 is the latest version of the Vue.js framework. It comes with a lot of new features and performance improvements. You can learn more about it on the official Vue.js website.",
+          showAnswer: false,
+        },
+        {
+          title: "How do I create a Vue3 component?",
+          description:
+            "I want to create a Vue3 component, but I am not sure how to do it. Can someone help?",
+          answer:
+            "To create a Vue3 component, you can use the Vue.component() method. You can learn more about it in the Vue.js documentation.",
+          showAnswer: false,
+        },
+      ],
+    };
+  },
+  methods: {
+    addQuestion() {
+      const newQuestionObject = {
+        title: this.newQuestion,
+        description: "",
+        answer: "",
+        showAnswer: false,
+      };
+      this.questions.push(newQuestionObject);
+      this.newQuestion = "";
+      this.newAnswer.push("");
+    },
+    toggleAnswer(index) {
+      this.questions[index].showAnswer = !this.questions[index].showAnswer;
+    },
+    addAnswer(index) {
+      const newAnswer = this.newAnswer[index];
+      if (newAnswer.trim() !== "") {
+        this.questions[index].answer = newAnswer;
+        this.questions[index].showAnswer = true;
+        this.newAnswer[index] = "";
+      }
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+/* Bootstrap CSS styles */
+.container {
+  max-width: 800px;
+  margin: auto;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
 }
-a {
-  color: #42b983;
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0062cc;
+  border-color: #005cbf;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 </style>
+
