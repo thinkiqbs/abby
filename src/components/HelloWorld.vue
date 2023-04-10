@@ -1,89 +1,107 @@
 <template>
-  <div class="container">
+  <div class="forum-container">
     <div class="row">
-      <div class="col-md-12">
-        <p class="mt-3 mb-3" style="float: right">
-          <button>Today</button>
-          <button>This Week</button>
-          <button>This Month</button>
-          <button>This Year</button>
-          <button>Top Questions</button>
+
+      
+      <div class="col-md-12 mt-5 mb-5">
+        <p class="button-group categories" style="float: right">
+          <button class="px-2">Today</button>
+          <button class="px-1">This Week</button>
+          <button class="px-1">This Month</button>
+          <button class="px-1">This Year</button>
+          <button class="px-1">Top Questions</button>
         </p>
       </div>
     </div>
     <div class="row mt-4">
       <div class="col-md-12">
-        <div class="form-group">
+        <div class="form-group header">
           <label for="new-question">Ask a Maths question:</label>
           <textarea
             type="text"
             class="form-control"
-            id="new-question"
-            v-model="newQuestion"
+            id="question_text"
+            v-model="questionData.question_text"
             placeholder="Enter your question"
           />
         </div>
         <button
           type="button"
-          class="btn btn-primary"
-          @click="addQuestion"
+          class="ask-button"
+          @click="postQuestion"
           style="float: right"
         >
           Ask
         </button>
       </div>
     </div>
-    <div class="row mt-4">
+
+    <div>
       <div class="col-md-12">
         <ul class="list-unstyled">
-          <li
+          <router-link
             v-for="(question, index) in questions"
             :key="index"
-            class="card my-4"
+            :to="'/questions/' + question.id"
+            :id="question.id"
           >
-            <h4>{{ question.title }}</h4>
-            <p>{{ question.description }}</p>
-            <p>
-              <button
-              type="button"
-              class="btn btn-primary"
-              @click="toggleAnswer(index)"
-            >
-              {{ question.showAnswer ? "Hide Answer" : "Show Answer" }}
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="toggleAnswer(index)"
-            >
-              Answer
-            </button>
+            <div class="card mt-5 my-4">
+              <h4 class="question">{{ question.question_text }}</h4>
 
-            </p>
-            <div class="form-group mt-4">
-              <label for="new-answer-{{ index }}">Your Answer:</label>
-              <input
-                type="text"
-                class="form-control"
-                :id="'new-answer-' + index"
-                v-model="newAnswer[index]"
-                placeholder="Enter your answer"
-              />
+              <p>
+                <span
+                  >Created by: <a href="mailto">{{ question.user }}</a></span
+                >
+                <span
+                  >on {{ new Date(question.created_at).toLocaleString() }}</span
+                >
+              </p>
+              <p>
+                <button
+                  type="button"
+                  class="show-answer-button"
+                  @click="toggleAnswer(index)"
+                >
+                  {{ question.showAnswer ? "Hide Answer" : "Show Answer" }}
+                </button>
+                <button
+                  type="button"
+                  class="show-answer-button"
+                  @click="toggleAddAnswer(index)"
+                >
+                  {{
+                    showAddAnswer && showAnswerIndex === index
+                      ? "Hide Answer"
+                      : "Answer"
+                  }}
+                </button>
+              </p>
+              <div
+                v-if="showAddAnswer && showAnswerIndex === index"
+                class="answer-form"
+              >
+                <textarea
+                  class="form-control"
+                  v-model="newAnswerText"
+                ></textarea>
+                <button type="button" @click="addAnswer(index)">
+                  Submit Answer
+                </button>
+              </div>
+
+              <div v-if="question.showAnswer" class="my-4">
+                <h4>Other Answers:</h4>
+
+                <p v-for="answer in question.answers" :key="answer.id">
+                  {{ answer.answer_text }}
+                  <span>Posted by: {{ answer.user }}</span>
+                  <span
+                    >on {{ new Date(answer.created_at).toLocaleString() }}</span
+                  >
+                </p>
+              </div>
             </div>
-            
-            <div v-if="question.showAnswer" class="my-4">
-              <h4>Other Answers:</h4>
-              <p>{{ question.answer }}</p>
-            </div>
-            
-            <button
-              type="button"
-              class="btn btn-primary btn-md-block mt-4"
-              @click="addAnswer(index)"
-            >
-              Answer
-            </button>
-          </li>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -91,55 +109,124 @@
 </template>
 
 <script>
+import axios from "../axios";
+import { reactive, onMounted } from "vue";
+// import apiClient from "../apiClient";
+
 export default {
   name: "ForumPage",
   data() {
     return {
       newQuestion: "",
-      newAnswer: [],
-      questions: [
-        {
-          title: "What is Vue3?",
-          description:
-            "I heard about Vue3, but I am not sure what it is. Can someone explain?",
-          answer:
-            "Vue3 is the latest version of the Vue.js framework. It comes with a lot of new features and performance improvements. You can learn more about it on the official Vue.js website.",
-          showAnswer: false,
+      showAddAnswer: false,
+      showAnswerIndex: null,
+    };
+  },
+
+  setup() {
+    const questionData = reactive({
+      question_text: "",
+    });
+
+    const postQuestion = () => {
+      axios
+        .post("/forum/questions/create/", questionData)
+        .then((response) => {
+          console.log(response.data);
+          // reload window with router
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    let questions = reactive([]);
+
+    const newAnswer = reactive([]);
+    const getQuestions = () => {
+      axios
+        .get("/forum/questions/?expand=answers")
+        .then((response) => {
+          const sortedQuestions = response.data.sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at);
+          });
+          questions.splice(0, questions.length, ...sortedQuestions);
+          newAnswer.splice(
+            0,
+            newAnswer.length,
+            ...sortedQuestions.map(() => "")
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    const toggleAnswer = (index) => {
+      questions[index].showAnswer = !questions[index].showAnswer;
+
+      if (questions[index].showAnswer) {
+        axios
+          .get(`/forum/questions/${questions[index].id}/answer/`)
+          .then((response) => {
+            questions[index].answers = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+
+    const addAnswer = (index) => {
+      const data = {
+        question: {
+          id: questions[index].id,
+          question_text: questions[index].question_text,
         },
-        {
-          title: "How do I create a Vue3 component?",
-          description:
-            "I want to create a Vue3 component, but I am not sure how to do it. Can someone help?",
-          answer:
-            "To create a Vue3 component, you can use the Vue.component() method. You can learn more about it in the Vue.js documentation.",
-          showAnswer: false,
-        },
-      ],
+        answer_text: newAnswer[index],
+      };
+
+      axios
+        .post(`/forum/questions/${questions[index].id}/answer/`, data)
+        .then((response) => {
+          const answer = response.data;
+          const serializedAnswer = {
+            id: answer.id,
+            user: answer.user,
+            question: answer.question.question_text,
+            answer_text: answer.answer_text,
+            created_at: answer.created_at,
+          };
+          questions[index].answer = serializedAnswer;
+          newAnswer[index] = "";
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    onMounted(getQuestions);
+
+    return {
+      questionData,
+      postQuestion,
+      questions,
+      newAnswer,
+      toggleAnswer,
+      addAnswer,
     };
   },
   methods: {
-    addQuestion() {
-      const newQuestionObject = {
-        title: this.newQuestion,
-        description: "",
-        answer: "",
-        showAnswer: false,
-      };
-      this.questions.push(newQuestionObject);
-      this.newQuestion = "";
-      this.newAnswer.push("");
-    },
-    toggleAnswer(index) {
-      this.questions[index].showAnswer = !this.questions[index].showAnswer;
-    },
-    addAnswer(index) {
-      const newAnswer = this.newAnswer[index];
-      if (newAnswer.trim() !== "") {
-        this.questions[index].answer = newAnswer;
-        this.questions[index].showAnswer = true;
-        this.newAnswer[index] = "";
+    toggleAddAnswer(index) {
+      if (this.showAnswerIndex === index) {
+        this.showAddAnswer = !this.showAddAnswer;
+      } else {
+        this.showAddAnswer = true;
+        this.showAnswerIndex = index;
       }
     },
+    // ...
   },
 };
 </script>
@@ -198,5 +285,17 @@ export default {
   border-color: #80bdff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+.p {
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.button-group button {
+  margin-right: 10px; /* Adjust this value to control the spacing between buttons */
+
+  border: orange;
+}
 </style>
+
+
 

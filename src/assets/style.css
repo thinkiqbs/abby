@@ -1,0 +1,409 @@
+/* Import Bootstrap CSS file */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+/* Main container for the forum */
+.forum-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header with logo and navigation */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header-logo {
+    font-weight: bold;
+    font-size: 32px;
+  }
+  
+  .header-nav {
+    display: flex;
+  }
+  
+  .header-nav li {
+    margin-right: 20px;
+  }
+  
+  .header-nav a {
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .header-nav a:hover {
+    color: #000;
+  }
+  
+  /* Search bar */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+  
+  .search-bar button {
+    background-color: #f60;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .search-bar button:hover {
+    background-color: #d40;
+  }
+  
+  /* Forum categories */
+  .categories {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .category {
+    width: calc(33.33% - 10px);
+    background-color: #f6f6f6;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .category:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .category h3 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .category p {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  /* Forum posts */
+  .posts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .post {
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 20px;
+  }
+  
+  .post:hover {
+    box-shadow: 0 0 5px #ccc;
+  }
+  
+  .post h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .post p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999;
+  }
+  
+  .post-meta span {
+    margin-left: 10px;
+  }
+  
+  .post-meta a {
+    color: #999;
+    text-decoration: none;
+  }
+  
+  .post-meta a:hover {
+    color: #666;
+  }
+
+  button {
+    background-color: #F48024;
+    border: none;
+    border-radius: 3px;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.33;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  button:hover {
+    background-color: #E3691E;
+  }
+
+  /* Ask button */
+.ask-button {
+    background-color: #F48024;
+    border: none;
+    border-radius: 3px;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.33;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .ask-button:hover {
+    background-color: #E3691E;
+  }
+  
+  /* Answer button */
+  /* Answer button */
+.answer-button {
+    background-color: #F5F6F7;
+    border: 1px solid #BCBBBB;
+    border-radius: 3px;
+    color: #3E3F40;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.33;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .answer-button:hover {
+    background-color: #E8E9EB;
+    border-color: #A9A9A9;
+  }
+  
+  
+  
+  /* Show answer button */
+.show-answer-button {
+    background-color: #FFF;
+    border: 1px solid #999;
+    border-radius: 3px;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.33;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .show-answer-button:hover {
+    background-color: #EEE;
+  }
+
+  /* Paragraph */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #3E3F40;
+    margin: 0 0 10px;
+    word-wrap: break-word;
+  }
+  
+  p code {
+    background-color: #F0F2F4;
+    border-radius: 3px;
+    color: #3E3F40;
+    padding: 2px 4px;
+  }
+  
+  p pre {
+    background-color: #F0F2F4;
+    border-radius: 3px;
+    color: #3E3F40;
+    font-size: 14px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    word-wrap: normal;
+  }
+  
+  p a {
+    color: #F48024;
+    text-decoration: none;
+    border-bottom: 1px solid #F48024;
+  }
+  
+  p a:hover {
+    color: #E3691E;
+    border-bottom: 1px solid #E3691E;
+  }
+
+  textarea.form-control {
+    background-color: white;
+    height: 150px; /* or any desired height */
+    resize: vertical;
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .user-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .user-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .custom-card .card-header {
+    background-color: rgb(237, 223, 223); /* light red */
+  }
+  .custom-card .card-body {
+    background-color: white; /* light green */
+  }
+  .custom-card .card-footer {
+    background-color: #ffff; /* light blue */
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f6f6f6;
+  }
+  
+  .login-form {
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    width: 400px;
+  }
+  
+  .login-form h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .login-form input[type="email"],
+  .login-form input[type="password"] {
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .login-form button[type="submit"] {
+    background-color: #0077cc;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: background-color 0.2s;
+    width: 100%;
+  }
+  
+  .login-form button[type="submit"]:hover {
+    background-color: #0066aa;
+  }
+  
+  .forgot-password {
+    margin-top: 20px;
+  }
+
+
+
+
+
+
+
+.d-flex.justify-content-center {
+  margin-top: 50px;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #212529;
+}
+
+.question {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+  /* add a border */
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  /* add padding */
+  padding: 1rem;
+  /* add background color */
+  background-color: #f2f2f2;
+}
+
+
+
+
+  
+  
+
+ 
+  
+  
+  
