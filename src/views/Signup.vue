@@ -45,8 +45,9 @@
 </template>
   
   <script>
-import { ref } from "vue";
+import { ref} from "vue";
 import axios from "../axios";
+import { useRouter } from "vue-router";
 
 export default {
   name: "SignUp",
@@ -55,6 +56,7 @@ export default {
     const password = ref("");
     const firstName = ref("");
     const lastName = ref("");
+    const router = useRouter()
 
     function handleSubmit() {
       const formData = {
@@ -68,6 +70,7 @@ export default {
         .post("/api/accounts/signup/", formData)
         .then((response) => {
           console.log(response.data); // handle success here
+          router.push('/')
         })
         .catch((error) => {
           console.error(error); // handle error here

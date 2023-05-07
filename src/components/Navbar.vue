@@ -34,7 +34,7 @@
           <!-- <li class="nav-item" v-if="state.token">
             <button class="btn btn-primary" @click="logout">Logout</button>
           </li> -->
-         
+
           <li class="nav-item dropdown" v-if="state.token">
             <a
               class="nav-link dropdown-toggle"
@@ -45,17 +45,16 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-            <i class="bi bi-person-bounding-box"></i>Profile
+              <i class="bi bi-person-bounding-box"></i>Profile
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="#">My Account</a>
               <a class="dropdown-item" href="/messages">Messages</a>
               <a class="dropdown-item" href="#">Articles</a>
-              <a class="dropdown-item" href="#" @click="logout" >Logout</a>
-
+              <a class="dropdown-item" href="#" @click="logout">Logout</a>
             </div>
           </li>
-           <li class="nav-item" v-else>
+          <li class="nav-item" v-else>
             <div>
               <button
                 class="btn btn-primary"
@@ -73,20 +72,52 @@
               </button>
             </div>
           </li>
+          
         </ul>
       </div>
     </div>
   </nav>
+
+  <div
+    class="modal fade panelbox panelbox-right"
+    id="sidebarPanel"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-0">
+          <!-- profile box -->
+
+          <div class="col linkedin-style">
+            <ul class="list-group">
+              <li
+                class="list-group-item card"
+                v-for="recipient in uniqueRecipients"
+                :key="recipient"
+                @click="alertUser(recipient)"
+              >
+                {{ recipient }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import axios from "../axios";
 import router from "../router";
 
 export default {
   name: "NavBar",
   setup() {
+    const messages = ref([]);
+    const currentUser = ref({});
+
     const redirectToLogin = () => {
       router.push("/login");
     };
@@ -99,15 +130,54 @@ export default {
       token: localStorage.getItem("token"),
     });
 
+    const alertUser = async (recipient) => {
+      // alert("message " + recipient);
+      const response = await axios.get(
+        "/private_messages/messagesChat/" + "?receiver_id=" + recipient
+      );
+      messages.value = response.data;
+    };
+
+      const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get("/api/accounts/users/me/");
+        currentUser.value = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const uniqueRecipients = computed(() => {
+      const recipientIds = messages.value.map((message) => message.receiver_id);
+      console.log(recipientIds);
+      return [...new Set(recipientIds)];
+    });
+
+
+    async function getMessages() {
+      const response = await axios.get("/private_messages/messagesChat/");
+
+      messages.value = response.data//.filter(
+       // (message) => message.sender_id === currentUser.value.email
+      //);
+    }
+
+     onMounted(async () => {
+      await fetchCurrentUser();
+      await getMessages();
+    });
+
+     getMessages();
+
     const logout = async () => {
       try {
+        localStorage.removeItem("token");
         const response = await axios.get("/api/accounts/logout/", {
           headers: {
             Authorization: `Token ${state.token}`,
           },
         });
 
-        localStorage.removeItem("token");
         localStorage.setItem("logoutResponse", JSON.stringify(response.data));
         window.location.replace("/login");
 
@@ -125,6 +195,9 @@ export default {
     }
 
     return {
+      messages,
+      uniqueRecipients,
+      alertUser,
       query,
       search,
       forumTitle,
@@ -138,4 +211,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -15,8 +15,6 @@
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
           data-bs-whatever=":question.question_text "
-
-
         >
           Message {{ question.user }}
         </button>
@@ -150,38 +148,33 @@
 
 <script>
 import axios from "../axios";
+import { v4 as uuidv4 } from "uuid";
 import { reactive, toRefs, onMounted } from "vue";
 
 export default {
-
-  
   props: {
     id: {
       type: Number,
       required: true,
     },
   },
-  data(){
+  data() {
     return {
-      recipientName: '',
-      
-    }
+      recipientName: "",
+    };
   },
   setup(props) {
-
-    const questionRef = toRefs(props.question)
+    const questionRef = toRefs(props.question);
     const state = reactive({
       question: {},
       newAnswerText: "",
       showAnswer: true,
       showAddAnswer: true,
       questionId: "",
-      messageText: '',
-
+      messageText: "",
     });
 
     onMounted(async () => {
-
       // Get the path (e.g. "/path/to/page.html")
       const path = window.location.pathname;
 
@@ -205,7 +198,6 @@ export default {
             console.error(error);
           });
       }
-
     });
 
     async function fetchQuestion() {
@@ -258,20 +250,32 @@ export default {
     const saveMessage = async () => {
       const senderResponse = await axios.get("/api/accounts/users/me/");
       const sender = senderResponse.data;
-      const recipient = await axios.get(`private_messages/users/?email=${state.question.user}`);
+      const recipient = await axios.get(
+        `private_messages/users/?email=${state.question.user}`
+      );
       const recipient_id = recipient.data;
-      console.log("recipient object", recipient);
+
+      console.log("recipient object", recipient_id);
 
       const data = {
-        sender: sender,
-        recipient: recipient_id,
-        // recipient_id: recipient.id,
-        message_text: state.messageText,
-
-
+        conversation_id: uuidv4(),
+        sender_id: sender.email,
+        receiver_id: recipient_id.email,
+        participants: {},
+        message: state.messageText,
+        timestamp: "",
       };
+
+      // const data = {
+      //   sender_id: sender,
+      //   recipient: recipient_id,
+      //   // recipient_id: recipient.id,
+      //   message_text: state.messageText,
+      //   created_at:new Date(),
+
+      // };
       axios
-        .post("/private_messages/messages/create/", data)
+        .post("/private_messages/chat_messages/create/", data)
         .then((response) => {
           console.log(response);
           // Do something with the response, such as update a message list
@@ -290,16 +294,13 @@ export default {
       addAnswer,
       saveMessage,
       questionRef,
-      
-      
     };
   },
   methods: {
-    async recipientNameAssign(state){
+    async recipientNameAssign(state) {
       this.recipientName = state.question;
-
     },
-  }
+  },
 };
 </script>
 

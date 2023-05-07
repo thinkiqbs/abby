@@ -13,7 +13,7 @@
         </main>
       </div>
       <div class="row">
-        <slot name="footer"></slot>
+        <!-- <slot name="footer"></slot> -->
       </div>
     </div>
   </div>

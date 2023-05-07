@@ -25,9 +25,13 @@ export default {
         const response = await axios.get(
           `/api/accounts/signup/verify/?code=${this.code}`
         );
+        if (response.status === 200) {
+          alert("Email confirmed successfully!");
+        }
         console.log(response.data);
       } catch (error) {
         console.error(error);
+        alert("There was an error confirming your email.");
       }
     },
   },

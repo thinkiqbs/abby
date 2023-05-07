@@ -5,6 +5,7 @@ import QuestionList from '../views/questionsPage.vue'
 import SignUp from '../views/Signup.vue'
 import SignupVerify from '../views/SignupVerify.vue'
 import MessagesPage from '../views/messages.vue'
+import chatTest from '../views/chatTest.vue'
 
 const routes = [
   {
@@ -44,6 +45,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: loginView
+  },
+  {
+    path:'/chatTest',
+    name:'chatTest',
+    component:chatTest
+
   },
   {
     path: '/about',

@@ -35,37 +35,42 @@
 import { ref } from "vue";
 import axios from "../axios";
 //   import router from '../router';
+import { useRouter } from "vue-router";
 
 export default {
   name: "LoginView",
   setup() {
     const email = ref("");
     const password = ref("");
+    const router = useRouter();
 
     const handleSubmit = async () => {
-      try {
-        const response = await axios.post("/api/accounts/login/", {
-          email: email.value,
-          password: password.value,
-        });
+  try {
+    const response = await axios.post('/api/accounts/login/', {
+      email: email.value,
+      password: password.value,
+    });
 
-        localStorage.clear();
-        localStorage.setItem("token", response.data.token);
-        console.log(response.data);
+    localStorage.clear();
+    localStorage.setItem('token', response.data.token);
+    console.log(response.data);
 
-        // Redirect to home page on successful login
-        if (response.status === 200) {
-          //   router.push('/');
-          window.location.replace("/");
-        }
-      } catch (error) {
-        console.error(error);
-        // Alert the user if the response is 400
-        if (error.response && error.response.status === 400) {
-          alert(error.response.data.detail);
-        }
-      }
-    };
+    // Redirect to home page on successful login
+    if (response.status === 200) {
+      router.push('/');
+      window.location.replace("/");
+    }
+  } catch (error) {
+    console.error(error);
+    // Alert the user if the response is 400
+    if (error.response && error.response.status === 400) {
+      alert(error.response.data.detail);
+    } else if (error.response && error.response.status === 401) {
+      alert(error.response.data.detail + " " + "You have received a link on the  email you provided, kindly click on the link to confirm your email");
+    }
+  }
+};
+
 
     return { email, password, handleSubmit };
   },
