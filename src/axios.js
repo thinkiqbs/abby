@@ -3,7 +3,8 @@ import axios from 'axios';
 
 // create an axios instance
 const instance = axios.create({
-  baseURL: 'http://localhost:8000'
+  // baseURL: 'http://localhost:8000'
+  baseURL: 'https://nmbajah.pythonanywhere.com/'
 });
 
 // add an interceptor to the axios instance
