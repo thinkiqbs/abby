@@ -1,8 +1,6 @@
 <template>
   <div class="forum-container">
     <div class="row">
-
-      
       <div class="col-md-12 mt-5 mb-5">
         <p class="button-group categories" style="float: right">
           <button class="px-2">Today</button>
@@ -16,6 +14,17 @@
     <div class="row mt-4">
       <div class="col-md-12">
         <div class="form-group header">
+          <label for="new-question">What is the title:</label>
+           <input
+            type="text"
+            class="form-control mb-5"
+            id="question_text"
+            v-model="questionData.title"
+            placeholder="Enter your Title here"
+          />
+
+
+
           <label for="new-question">Ask a Maths question:</label>
           <textarea
             type="text"
@@ -23,6 +32,7 @@
             id="question_text"
             v-model="questionData.question_text"
             placeholder="Enter your question"
+            rows="12"
           />
         </div>
         <button
@@ -45,9 +55,10 @@
             :to="'/questions/' + question.id"
             :id="question.id"
           >
-            <div class="card mt-5 my-4">
-              <h4 class="question">{{ question.question_text }}</h4>
+            <div class="custom_card mt-5 my-4">
+            <h4 class="question_title">{{ question.title }}</h4>
 
+              <p class="question">{{ question.question_text }}</p>
               <p>
                 <span
                   >Created by: <a href="mailto">{{ question.user }}</a></span
@@ -106,6 +117,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -125,6 +137,7 @@ export default {
 
   setup() {
     const questionData = reactive({
+      title: "",
       question_text: "",
     });
 

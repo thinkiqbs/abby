@@ -1,72 +1,11 @@
 <template>
-  <div>
+  <div class="container mt-5">
     <h1>Messages</h1>
     <!-- create two columns  -->
-    <div class="row">
-      <div class="col-4">
-        <ul class="list-group">
-          <li
-            class="list-group-item card"
-            v-for="recipient in messages"
-            :key="recipient.id"
-            @click="alertUser(recipient.sender_id)"
-          >
-            <div class="sender-info">
-              <!-- add an avatar -->
-              <div class="avatar col-4">
-                <img
-                  src="https://api.dicebear.com/6.x/lorelei/svg"
-                  alt="Avatar"
-                  class="avatar"
-                  style="width: 100px; height: 100px"
-                />
-              </div>
-              <div class="username col-md-6">
-                {{ recipient.sender_id }}
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="col">
-        <div
-          v-for="message in filteredMessages"
-          :key="message.id"
-          class="message-container col"
-        >
-          <div class="sender-info">{{ message.receiver_id }}:</div>
-          <div class="message">{{ message.message }}</div>
-          <button @click="activateReply(message)">Reply</button>
-          <div v-if="replyActive && message === activeMessage">
-            <textarea
-              v-model="replyText"
-              class="form-textarea"
-              placeholder="Type your reply..."
-            ></textarea>
-            <button @click="sendReply">Send</button>
-          </div>
-        </div>
-        <form @submit.prevent="sendMessage" class="chat-form">
-          <div class="form-group">
-            <label for="message" class="form-label">Message:</label>
-            <textarea
-              id="message"
-              v-model="messageText"
-              class="form-textarea"
-            ></textarea>
-          </div>
-          <button type="submit" class="form-btn">Send</button>
-        </form>
-      </div>
-    </div>
+
     <div class="row">
       <div class="col-md-1">
-        <a
-          href="#"
-          class="btn btn-primary btn-block margin-bottom"
-          @click="showCompose"
-          >Compose</a
-        >
+        <a href="#" class="ask-button" @click="showCompose">Compose</a>
         <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">Folders</h3>
@@ -80,15 +19,13 @@
                 >
               </li>
               <li>
-                <a href="https://www.free-css.com/free-css-templates"
+                <a href="#" @click="sentMessages"
                   ><i class="bi bi-send-fill"></i> Sent</a
                 >
               </li>
 
               <li>
-                <a href="https://www.free-css.com/free-css-templates"
-                  ><i class="bi bi-trash-fill"></i> Trash</a
-                >
+                <a href="#"><i class="bi bi-trash-fill"></i> Trash</a>
               </li>
             </ul>
           </div>
@@ -143,54 +80,27 @@
               </div>
             </div>
             <div class="table-responsive mailbox-messages">
-              <table
-                class="table table-hover table-striped"
-                v-for="recipient in messages"
-                :key="recipient.id"
-              >
-                <tbody>
-                  <tr @click="readMessage">
+              <table class="table table-hover table-striped">
+                <tbody class="text-left" style="align-content: left">
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>from</th>
+                    <th>subject</th>
+                    <th>date</th>
+                  </tr>
+                  <tr
+                    v-for="recipient in allMessagessent"
+                    :key="recipient.id"
+                    @click="selectMessage(recipient)"
+                  >
+                    <td>{{ recipient.sender_id }}</td>
+                    <td>{{ recipient.message }}</td>
                     <td>
-                      <div
-                        class="icheckbox_flat-blue"
-                        aria-checked="false"
-                        aria-disabled="false"
-                        style="position: relative"
-                      >
-                        <input
-                          type="checkbox"
-                          style="position: absolute; opacity: 0"
-                        /><ins
-                          class="iCheck-helper"
-                          style="
-                            position: absolute;
-                            top: 0%;
-                            left: 0%;
-                            display: block;
-                            width: 100%;
-                            height: 100%;
-                            margin: 0px;
-                            padding: 0px;
-                            background: rgb(255, 255, 255);
-                            border: 0px;
-                            opacity: 0;
-                          "
-                        ></ins>
-                      </div>
+                      {{
+                        formatDate(recipient.timestamp, "DD/MM/YYYY hh:mm:ss")
+                      }}
                     </td>
-                    <td class="mailbox-star">
-                      <a href="https://www.free-css.com/free-css-templates"
-                        ><i class="fa fa-star text-yellow"></i
-                      ></a>
-                    </td>
-                    <td class="mailbox-name">
-                      <a href="read-mail.php">{{ recipient.sender_id }}</a>
-                    </td>
-                    <td class="mailbox-subject">
-                      <b>sent</b> - {{ recipient.message }}
-                    </td>
-                    <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 mins ago</td>
                   </tr>
                 </tbody>
               </table>
@@ -235,7 +145,10 @@
         <composeView />
       </div>
       <div class="col" v-if="viewDepthKey === 2">
-        <readMessage />
+        <readMessage v-if="selectedMessage" :selectedMessage="selectedMessage" />
+      </div>
+      <div class="col" style="justify-content: left" v-if="viewDepthKey === 3">
+        <sentMessages :messages="messages" />
       </div>
     </div>
   </div>
@@ -246,15 +159,18 @@ import { ref, onMounted, watch } from "vue";
 import axios from "../axios";
 import composeView from "@/views/compose";
 import readMessage from "@/views/readMessage";
+import sentMessages from "@/views/sentMessages";
 
 export default {
   name: "MessagesWindow",
   components: {
     composeView,
     readMessage,
+    sentMessages,
   },
   setup() {
     const messages = ref([]);
+    const allMessagessent = ref([{}]);
     const message = ref({ sender_id: "", receiver_id: "", message: "" });
     const selectedSenderId = ref("");
     const messageText = ref("");
@@ -263,6 +179,7 @@ export default {
     const replyText = ref("");
     const loggedInUser = ref({});
     const viewDepthKey = ref(0);
+    const selectedMessage = ref(null);
 
     const getUserInfo = () => {
       axios.get("/api/accounts/users/me/").then((response) => {
@@ -273,6 +190,7 @@ export default {
 
     const whatToShow = () => {
       viewDepthKey.value = 0;
+      getMessages();
       console.log(viewDepthKey);
     };
 
@@ -281,22 +199,66 @@ export default {
       console.log(viewDepthKey);
     };
 
-    const readMessage = () => {
+    const selectMessage = (message) => {
+      // Set selectedMessage to the clicked message
       viewDepthKey.value = 2;
+
+      selectedMessage.value = message;
+      console.log(selectedMessage.value);
+    };
+
+    const sentMessages = () => {
+      viewDepthKey.value = 3;
       console.log(viewDepthKey);
     };
+
+    // const getAllMessages = () => {
+    //    axios.get("/private_messages/messagesChat/").then((response) => {
+    //     allMessagessent.value = response.data;
+    //     console.log(allMessagessent.value);
+    // });
+    // };
 
     const getMessages = () => {
       axios.get("/private_messages/messagesChat/").then((response) => {
         const allMessages = response.data;
-        const uniqueSenderIds = [
-          ...new Set(allMessages.map((message) => message.sender_id)),
-        ];
-        messages.value = uniqueSenderIds.map((senderId) => {
-          return allMessages.find((message) => message.sender_id === senderId);
-        });
+        // const uniqueSenderIds = [
+        //   ...new Set(allMessages.map((message) => message.sender_id)),
+        // ];
+        messages.value = allMessages;
       });
     };
+
+    const messsagesSentToMe = () => {
+      axios.get("/private_messages/messagesChat/").then((response) => {
+        const allMessages = response.data;
+
+        allMessagessent.value = allMessages.filter((message) => {
+          return message.receiver_id == loggedInUser.value.email;
+        });
+
+        console.log("sent to me", allMessagessent.value);
+        console.log("user", loggedInUser.value);
+      });
+    };
+
+    function formatDate(dateString, format) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
+      const formattedDate = format
+        .replace("YYYY", year)
+        .replace("MM", month)
+        .replace("DD", day)
+        .replace("hh", hours)
+        .replace("mm", minutes)
+        .replace("ss", seconds);
+      return formattedDate;
+    }
 
     const sendMessage = () => {
       const newMessage = {
@@ -324,6 +286,8 @@ export default {
     onMounted(() => {
       getUserInfo();
       getMessages();
+      // getAllMessages();
+      messsagesSentToMe();
     });
 
     const filteredMessages = ref([]);
@@ -378,6 +342,12 @@ export default {
       showCompose,
       viewDepthKey,
       readMessage,
+      sentMessages,
+      allMessagessent,
+      messsagesSentToMe,
+      formatDate,
+      selectedMessage,
+      selectMessage,
     };
   },
 };

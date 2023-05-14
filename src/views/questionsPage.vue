@@ -79,7 +79,10 @@
       </div>
     </div>
 
-    <div
+    
+  </div>
+
+  <div
       class="modal fade"
       id="exampleModal"
       tabindex="-1"
@@ -142,7 +145,8 @@
         </div>
       </div>
     </div>
-  </div>
+    <!-- Button trigger modal -->
+
 </template>
   
 

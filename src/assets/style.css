@@ -375,13 +375,21 @@ textarea.form-control {
   color: #212529;
 }
 
+.question_title {
+  font-size: large;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 1rem;
+  padding: auto;
+}
+
 .question {
   font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
+  font-weight: lighter;
+  color: #000;
   margin-bottom: 1rem;
   /* add a border */
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 0.5rem;
   /* add padding */
   padding: 1rem;
@@ -811,8 +819,9 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
 }
-td {
+.td {
   padding: 0;
+  text-align: left;
 }
 @media print {
   *,
@@ -959,6 +968,7 @@ table {
 .table-responsive {
   min-height: 0.01%;
   overflow-x: auto;
+  align-items: flex-start;
 }
 @media screen and (max-width: 767px) {
   .table-responsive {
@@ -1451,8 +1461,18 @@ a:focus {
 .table > tbody > tr > td {
   border-top: 1px solid #f4f4f4;
 }
+.mailbox-name > .table {
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0;
+justify-content: left;
+
+}
 .mailbox-messages > .table {
   margin: 0;
+  text-align: left;
+
+
 }
 .mailbox-controls {
   padding: 5px;
@@ -1518,91 +1538,7 @@ a:focus {
   }
 }
 /*! CSS Used fontfaces */
-@font-face {
-  font-family: "Glyphicons Halflings";
-  src: url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.eot);
-  src: url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.woff)
-      format("woff"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.ttf)
-      format("truetype"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular)
-      format("svg");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 300;
-  src: local("Source Sans Pro Light"), local("SourceSansPro-Light"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Light.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Light.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Source Sans Pro"), local("SourceSansPro-Regular"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Regular.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Regular.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Source Sans Pro Semibold"), local("SourceSansPro-Semibold"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Semibold.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Semibold.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Bold.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Bold.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 300;
-  src: local("Source Sans Pro Light Italic"), local("SourceSansPro-LightIt"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-LightIt.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-LightIt.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Source Sans Pro Italic"), local("SourceSansPro-It"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-It.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-It.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 600;
-  src: local("Source Sans Pro Semibold Italic"),
-    local("SourceSansPro-SemiboldIt"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-SemiboldIt.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-SemiboldIt.woff)
-      format("woff");
-}
+
 /*! CSS Used from: https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/bootstrap.min.css */
 a {
   background-color: transparent;
@@ -2178,6 +2114,7 @@ a:focus {
   margin-bottom: 20px;
   width: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  
 }
 .box.box-primary {
   border-top-color: #3c8dbc;
@@ -2319,88 +2256,4 @@ ul.wysihtml5-toolbar a[data-wysihtml5-command="underline"] {
   text-decoration: underline;
 }
 /*! CSS Used fontfaces */
-@font-face {
-  font-family: "Glyphicons Halflings";
-  src: url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.eot);
-  src: url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.woff)
-      format("woff"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.ttf)
-      format("truetype"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular)
-      format("svg");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 300;
-  src: local("Source Sans Pro Light"), local("SourceSansPro-Light"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Light.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Light.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Source Sans Pro"), local("SourceSansPro-Regular"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Regular.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Regular.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Source Sans Pro Semibold"), local("SourceSansPro-Semibold"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Semibold.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Semibold.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Bold.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-Bold.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 300;
-  src: local("Source Sans Pro Light Italic"), local("SourceSansPro-LightIt"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-LightIt.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-LightIt.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Source Sans Pro Italic"), local("SourceSansPro-It"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-It.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-It.woff)
-      format("woff");
-}
-@font-face {
-  font-family: "Source Sans Pro";
-  font-style: italic;
-  font-weight: 600;
-  src: local("Source Sans Pro Semibold Italic"),
-    local("SourceSansPro-SemiboldIt"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-SemiboldIt.woff2)
-      format("woff2"),
-    url(https://www.free-css.com/assets/files/free-css-templates/preview/page210/adminlte/assets/css/fonts/SourceSansPro-SemiboldIt.woff)
-      format("woff");
-}
+

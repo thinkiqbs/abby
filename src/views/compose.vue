@@ -1,315 +1,133 @@
-@
 <template>
   <div class="col-md-9">
+   
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Compose New Message</h3>
       </div>
       <div class="box-body">
         <div class="form-group">
-          <input class="form-control" placeholder="To:" />
+          <input v-model="recipientEmail" class="form-control" placeholder="To:" />
         </div>
         <div class="form-group">
-          <input class="form-control" placeholder="Subject:" />
+          <input v-model="subject" class="form-control" placeholder="Subject:" />
         </div>
         <div class="form-group">
-          <ul class="wysihtml5-toolbar" style="">
-            <li class="dropdown">
-              <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-font"></span>
-                <span class="current-font">Normal text</span>
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="div"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Normal text</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h1"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 1</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h2"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 2</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h3"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 3</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h4"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 4</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h5"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 5</a
-                  >
-                </li>
-                <li>
-                  <a
-                    data-wysihtml5-command="formatBlock"
-                    data-wysihtml5-command-value="h6"
-                    tabindex="-1"
-                    href="javascript:;"
-                    unselectable="on"
-                    >Heading 6</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <div class="btn-group">
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="bold"
-                  title="CTRL+B"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  >Bold</a
-                >
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="italic"
-                  title="CTRL+I"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  >Italic</a
-                >
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="underline"
-                  title="CTRL+U"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  >Underline</a
-                >
+          <form @submit.prevent="sendMessage" class="chat-form">
+            <div class="form-group">
+              <label for="message" class="form-label">Message:</label>
+              <textarea
+                id="message"
+                v-model="messageText"
+                class="form-textarea"
+                rows="10"
+              ></textarea>
+            </div>
+            <div class="box-footer">
+              <div class="pull-right">
+                <button class="btn btn-default">
+                  <i class="bi bi-pencil"></i> Draft
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-envelope"></i> Send
+                </button>
               </div>
-            </li>
-            <li>
-              <div class="btn-group">
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="insertUnorderedList"
-                  title="Unordered list"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  ><span class="glyphicon glyphicon-list"></span
-                ></a>
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="insertOrderedList"
-                  title="Ordered list"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  ><span class="glyphicon glyphicon-th-list"></span
-                ></a>
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="Outdent"
-                  title="Outdent"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  ><span class="glyphicon glyphicon-indent-right"></span
-                ></a>
-                <a
-                  class="btn btn-default"
-                  data-wysihtml5-command="Indent"
-                  title="Indent"
-                  tabindex="-1"
-                  href="javascript:;"
-                  unselectable="on"
-                  ><span class="glyphicon glyphicon-indent-left"></span
-                ></a>
-              </div>
-            </li>
-            <li>
-              <div class="bootstrap-wysihtml5-insert-link-modal modal fade">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <a class="close" data-dismiss="modal">×</a>
-                      <h3>Insert link</h3>
-                    </div>
-                    <div class="modal-body">
-                      <input
-                        value="http://"
-                        class="bootstrap-wysihtml5-insert-link-url form-control"
-                      />
-                      <label class="checkbox">
-                        <input
-                          type="checkbox"
-                          class="bootstrap-wysihtml5-insert-link-target"
-                          checked=""
-                        />Open link in new window</label
-                      >
-                    </div>
-                    <div class="modal-footer">
-                      <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-                      <a href="#" class="btn btn-primary" data-dismiss="modal"
-                        >Insert link</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <a
-                class="btn btn-default"
-                data-wysihtml5-command="createLink"
-                title="Insert link"
-                tabindex="-1"
-                href="javascript:;"
-                unselectable="on"
-              >
-                <span class="glyphicon glyphicon-share"></span>
-              </a>
-            </li>
-            <li>
-              <div class="bootstrap-wysihtml5-insert-image-modal modal fade">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <a class="close" data-dismiss="modal">×</a>
-                      <h3>Insert image</h3>
-                    </div>
-                    <div class="modal-body">
-                      <input
-                        value="http://"
-                        class="bootstrap-wysihtml5-insert-image-url form-control"
-                      />
-                    </div>
-                    <div class="modal-footer">
-                      <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-                      <a class="btn btn-primary" data-dismiss="modal"
-                        >Insert image</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <a
-                class="btn btn-default"
-                data-wysihtml5-command="insertImage"
-                title="Insert image"
-                tabindex="-1"
-                href="javascript:;"
-                unselectable="on"
-              >
-                <span class="glyphicon glyphicon-picture"></span>
-              </a>
-            </li>
-          </ul>
-          <textarea
-            id="compose-textarea"
-            class="form-control"
-            style="height: 300px; display: none"
-          >
-&lt;h1&gt;&lt;u&gt;Heading Of Message&lt;/u&gt;&lt;/h1&gt;&lt;h4&gt;Subheading&lt;/h4&gt;&lt;p&gt;But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee&lt;/p&gt;&lt;ul&gt;&lt;li&gt;List item one&lt;/li&gt;&lt;li&gt;List item two&lt;/li&gt;&lt;li&gt;List item three&lt;/li&gt;&lt;li&gt;List item four&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Thank you,&lt;/p&gt;&lt;p&gt;John Doe&lt;/p&gt;
-</textarea
-          ><input type="hidden" name="_wysihtml5_mode" value="1" /><iframe
-            class="wysihtml5-sandbox"
-            security="restricted"
-            allowtransparency="true"
-            frameborder="0"
-            width="0"
-            height="0"
-            marginwidth="0"
-            marginheight="0"
-            style="
-              background-color: rgb(255, 255, 255);
-              border-collapse: separate;
-              border-color: rgb(210, 214, 222);
-              border-style: solid;
-              border-width: 1px;
-              clear: none;
-              display: block;
-              float: none;
-              margin: 0px;
-              outline: rgb(85, 85, 85) none 0px;
-              outline-offset: 0px;
-              padding: 6px 12px;
-              position: static;
-              inset: auto;
-              z-index: auto;
-              vertical-align: baseline;
-              text-align: start;
-              box-shadow: none;
-              border-radius: 0px;
-              width: 661.75px;
-              height: 300px;
-            "
-          ></iframe>
+              <button class="btn btn-default">
+                <i class="bi bi-trash"></i> Discard
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="form-group">
-          <div class="btn btn-default btn-file">
-            <i class="fa fa-paperclip"></i> Attachment
-            <input type="file" name="attachment" />
-          </div>
-          <p class="help-block">Max. 32MB</p>
-        </div>
-      </div>
-      <div class="box-footer">
-        <div class="pull-right">
-          <button class="btn btn-default">
-            <i class="fa fa-pencil"></i> Draft
-          </button>
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-envelope-o"></i> Send
-          </button>
-        </div>
-        <button class="btn btn-default">
-          <i class="fa fa-times"></i> Discard
-        </button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import axios from '../axios';
+import { ref ,onMounted} from 'vue';
+import { v4 as uuidv4 } from 'uuid';
+
 export default {
-    name:'composeView',
+  name: 'composeView',
+  setup() {
+    const loggedInUser = ref({}); // replace with your own logic
+    const messages = ref([]);
+    const activeMessage = ref(null);
+    const replyActive = ref(false);
+    const replyText = ref('');
+    const messageText = ref('');
+    const recipientEmail = ref('');
+
+    const getUserInfo = () => {
+      axios.get('/api/accounts/users/me/').then((response) => {
+        loggedInUser.value = response.data;
+        console.log("emailuser", loggedInUser.value.email);
+      });
+    };
+
+    const getMessages = async () => {
+      try {
+        const response = await axios.get('/private_messages/chat_messages/');
+        messages.value = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const sendMessage = () => {
+      const newMessage = {
+        sender_id: loggedInUser.value.email,
+        receiver_id: recipientEmail.value,
+        message: messageText.value,
+        conversation_id: uuidv4(), // add UUID
+        participants: [],
+      };
+
+      axios
+        .post('/private_messages/chat_messages/create/', newMessage)
+        .then(() => {
+          // Handle success or update the messages list
+          getMessages();
+          messageText.value = '';
+        })
+        .catch((error) => {
+          // Handle errors here
+          console.error(error);
+        });
+    };
+
+    const activateReply = (message) => {
+      replyActive.value = true;
+      activeMessage.value = message;
+    };
+
+    const alertUser = (userId) => {
+      alert(`Clicked on user with ID: ${userId}`);
+    };
+
+    onMounted(() => {
+      getUserInfo();
+      getMessages();
+    });
+
+    return {
+      loggedInUser,
+      messages,
+      activeMessage,
+      replyActive,
+      replyText,
+      messageText,
+      getMessages,
+      sendMessage,
+      activateReply,
+      alertUser,
+      recipientEmail,
+      getUserInfo,
+    };
+  },
 };
 </script>
+
+
 
 <style></style>
